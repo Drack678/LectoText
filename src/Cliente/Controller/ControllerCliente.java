@@ -13,7 +13,7 @@ public class ControllerCliente implements ActionListener{
     private ClienteConexion cliente;
     private VentanaCliente ventanaCliente;
     private Properties properties;
-    private JFileChooser fileChooser;
+    private JFileChooser fileChooser = new JFileChooser();
     private FileInputStream fileInputStream;
     private int p1, p2;
     private String mensaje;
@@ -21,9 +21,6 @@ public class ControllerCliente implements ActionListener{
     public ControllerCliente(){
         this.cliente = new ClienteConexion(p1,p2);
         this.ventanaCliente = new VentanaCliente();
-        this.properties = new Properties();
-        this.fileChooser = new JFileChooser();
-        this.fileInputStream = null;
         ventanaCliente.getButton1().addActionListener(this);
         ventanaCliente.getButton2().addActionListener(this);
         getProperties();

@@ -15,6 +15,7 @@ public class VentanaCliente {
 
     public VentanaCliente(){
         frame1 = new JFrame("VENTANA CLIENTE");
+        panel1 = new JPanel();
         label1 = new JLabel("MENSAJE:");
         textField1 = new JTextField();
         button1 = new JButton("OK");
