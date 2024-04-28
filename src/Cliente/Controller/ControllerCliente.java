@@ -27,6 +27,7 @@ public class ControllerCliente implements ActionListener{
         ventanaCliente.getButton1().addActionListener(this);
         ventanaCliente.getButton2().addActionListener(this);
         getProperties();
+        charlar();
     }
     public void getProperties(){
         try{
