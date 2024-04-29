@@ -1,5 +1,7 @@
 package Cliente.View;
 
+import java.awt.Dimension;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +20,7 @@ public class VentanaCliente {
         panel1 = new JPanel();
         label1 = new JLabel("MENSAJE:");
         textField1 = new JTextField();
+        textField1.setPreferredSize(new Dimension(200,300));
         button1 = new JButton("OK");
         button2 = new JButton("SALIR");
         initComponents();
@@ -29,6 +32,8 @@ public class VentanaCliente {
         panel1.add(button1);
         panel1.add(button2);
         frame1.add(panel1);
+        frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame1.setVisible(true);
         frame1.pack();
     }
     public JButton getButton1(){

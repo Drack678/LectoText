@@ -40,10 +40,10 @@ public class ControllerCliente implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == ventanaCliente.getButton1()){
             mensaje = ventanaCliente.getTextField1().getText();
-            cliente.setMensaje(mensaje);
+            cliente.enviarCadenas(mensaje);
         }
         if(e.getSource() == ventanaCliente.getButton2()){
-            cliente.setActivo(false);
+            cliente.cerrarSockets(true);
             System.out.println("Desconectado");
         }
     }

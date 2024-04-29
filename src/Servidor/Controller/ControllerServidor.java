@@ -14,9 +14,10 @@ public class ControllerServidor {
     private int p1;
     
     public ControllerServidor(){
-        this.servidor = new ServidorConexion(p1);
         this.properties = new Properties();
         getProperties();
+        System.out.println("servidor iniciado");
+        this.servidor = new ServidorConexion(p1);
         charlar();
     }
     public void getProperties(){

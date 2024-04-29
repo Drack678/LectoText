@@ -17,6 +17,7 @@ public class ServidorConexion {
 
     public ServidorConexion(int puerto1) {
         this.puerto1 = puerto1;
+        conectar();
     }
 
     public void conectar() {

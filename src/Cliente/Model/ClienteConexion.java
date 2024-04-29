@@ -11,10 +11,22 @@ public class ClienteConexion {
     private Socket socketClienteOut, socketClienteIn;
     private DataInputStream dataInputStreamCliente;
     private int puerto;
-    private boolean activo = true;
+    //private boolean activo = true;
     private static String IP_SERVER;
-    private String mensaje = "";
-
+    private String mensaje = "HOLA";
+    public void cerrarSockets(boolean activo) {
+        if(activo){
+            try {
+                dataInputStreamCliente.close();
+                socketClienteIn.close();
+                socketClienteOut.close();
+                dataOutputStreamCliente.close();
+                fromServer.close();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Error: no se pudo cerrar los sockets");
+            }
+        }
+    }
     public ClienteConexion(int puerto1, int puerto2) {
         this.puerto = puerto1;
         try {
@@ -22,40 +34,27 @@ public class ClienteConexion {
             //socketClienteIn = new Socket(ClienteConexion.IP_SERVER, puerto2);
             dataOutputStreamCliente = new DataOutputStream(socketClienteOut.getOutputStream());
             //dataInputStreamCliente = new DataInputStream(socketClienteIn.getInputStream());
-            enviarCadenas();
         } catch (UnknownHostException ex) {
             JOptionPane.showMessageDialog(null, "Error: no se encontro el servidor");
+            System.out.println(ex.getMessage());
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Error: no se pudo conectar con el servidor");
             System.out.println(ex.getMessage());
         }
+        enviarCadenas(mensaje);
     }
-    private void enviarCadenas() {
+    public void enviarCadenas(String mensaje) {
         try {
-            do{
-                dataOutputStreamCliente.writeUTF(mensaje);   
-            }while(activo);
-            cerrarSockets();
+            dataOutputStreamCliente.writeUTF(mensaje);   
         } catch (IOException ex) {
            JOptionPane.showMessageDialog(null, "Error: no se pudo crear los flujos");
         }
     }
 
-    private void cerrarSockets() {
-        try {
-            dataInputStreamCliente.close();
-            socketClienteIn.close();
-            socketClienteOut.close();
-            dataOutputStreamCliente.close();
-            fromServer.close();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error: no se pudo cerrar los sockets");
-        }
-    }
     public void setMensaje(String mensaje){
         this.mensaje = mensaje;
     }
-    public void setActivo(boolean activo){
+    /*public void setActivo(boolean activo){
         this.activo = activo;
-    }
+    }*/
 }
