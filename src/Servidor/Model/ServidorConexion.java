@@ -17,31 +17,20 @@ public class ServidorConexion {
 
     public ServidorConexion(int puerto1) {
         this.puerto1 = puerto1;
-        conectar();
     }
 
-    public void conectar() {
-        try {
-            ServerSocketServidor = new ServerSocket(puerto1);
-            System.out.println("Esperando coneccion:");
-            socketClienteIn = ServerSocketServidor.accept();
-            System.out.println("Cliente conectado");
-            dataInputStreamCliente = new DataInputStream(socketClienteIn.getInputStream());
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error: no se pudo conectar con el servidor");
-        }
+    public void conectar()throws IOException{
+        ServerSocketServidor = new ServerSocket(puerto1);
+        socketClienteIn = ServerSocketServidor.accept();
+        dataInputStreamCliente = new DataInputStream(socketClienteIn.getInputStream());
         recibirCadenas();
     }
-    private void recibirCadenas() {
-        try {
-            while(activo){
-                mensaje = dataInputStreamCliente.readUTF();
-                System.out.println(mensaje); 
-            }
-            cerrarSockets();
-        } catch (IOException ex) {
-           JOptionPane.showMessageDialog(null, "Error: no se pudo crear los flujos");
+    private void recibirCadenas()throws IOException{
+        while(activo){
+            mensaje = dataInputStreamCliente.readUTF();
+            System.out.println(mensaje); 
         }
+        cerrarSockets();
     }
 
     private void cerrarSockets() {

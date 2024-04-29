@@ -1,36 +1,36 @@
 package Servidor.Controller;
 
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
-
-import javax.swing.JFileChooser;
 import Servidor.Model.ServidorConexion;
+import Servidor.View.*;
 
 public class ControllerServidor {
     private ServidorConexion servidor;
     private Properties properties;
-    private JFileChooser fileChooser = new JFileChooser();
-    private FileInputStream fileInputStream;
+    private FileChooser fileChooser;
     private int p1;
+    private Aviso aviso;
     
     public ControllerServidor(){
+        this.aviso = new Aviso();
         this.properties = new Properties();
-        getProperties();
-        System.out.println("servidor iniciado");
+        this.fileChooser = new FileChooser();
+        cargarProperties();
         this.servidor = new ServidorConexion(p1);
-        charlar();
-    }
-    public void getProperties(){
+        aviso.verMensaje("Servidor lanzado");
         try{
-            this.fileChooser.showOpenDialog(null);
-            this.fileInputStream = new FileInputStream(this.fileChooser.getSelectedFile());
-            this.properties.load(this.fileInputStream);
+            servidor.conectar();
+        }catch(IOException e){
+            aviso.verExcepcionConexion(e);
+        }
+    }
+    public void cargarProperties(){
+        try{
+            this.properties.load(this.fileChooser.getProperties());
             this.p1 = Integer.parseInt(this.properties.getProperty("port.1"));
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
-    public void charlar(){
-        servidor.conectar();
     }
 }
