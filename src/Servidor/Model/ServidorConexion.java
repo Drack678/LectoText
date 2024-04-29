@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import javax.swing.JOptionPane;
 
 public class ServidorConexion {
     private ServerSocket ServerSocketServidor;
@@ -23,26 +22,23 @@ public class ServidorConexion {
         ServerSocketServidor = new ServerSocket(puerto1);
         socketClienteIn = ServerSocketServidor.accept();
         dataInputStreamCliente = new DataInputStream(socketClienteIn.getInputStream());
-        recibirCadenas();
     }
-    private void recibirCadenas()throws IOException{
-        while(activo){
-            mensaje = dataInputStreamCliente.readUTF();
-            System.out.println(mensaje); 
-        }
-        cerrarSockets();
+    public void recibirCadenas()throws IOException{
+        mensaje = dataInputStreamCliente.readUTF(); 
     }
 
-    private void cerrarSockets() {
-        try {
-            dataInputStreamCliente.close();
-            socketClienteIn.close();
-            ServerSocketServidor.close();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error: no se pudo cerrar los sockets");
-        }
+    public void cerrarSockets()throws IOException{ 
+        dataInputStreamCliente.close();
+        socketClienteIn.close();
+        ServerSocketServidor.close();
     }
     public void setActivo(boolean activo){
         this.activo = activo;
+    }
+    public boolean getActivo(){
+        return this.activo;
+    }
+    public String getMensaje(){
+        return this.mensaje;
     }
 }

@@ -21,6 +21,11 @@ public class ControllerServidor {
         aviso.verMensaje("Servidor lanzado");
         try{
             servidor.conectar();
+            while (servidor.getActivo()) {
+                servidor.recibirCadenas();
+                aviso.verMensaje(servidor.getMensaje());
+            }
+            servidor.cerrarSockets();
         }catch(IOException e){
             aviso.verExcepcionConexion(e);
         }
@@ -30,7 +35,7 @@ public class ControllerServidor {
             this.properties.load(this.fileChooser.getProperties());
             this.p1 = Integer.parseInt(this.properties.getProperty("port.1"));
         }catch(Exception e){
-            e.printStackTrace();
+            aviso.verExcepcion(e);
         }
     }
 }
