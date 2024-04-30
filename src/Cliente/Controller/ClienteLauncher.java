@@ -1,7 +1,7 @@
 package Cliente.Controller;
 
-public class ControllerLauncher {
+public class ClienteLauncher {
     public static void main(String[] args) {
-        new ControllerCliente();
+        new ClienteControl();
     }
 }

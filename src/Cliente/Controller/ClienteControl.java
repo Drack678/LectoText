@@ -8,19 +8,18 @@ import java.net.UnknownHostException;
 import Cliente.Model.ClienteConexion;
 import Cliente.View.Aviso;
 import Cliente.View.FileChooser;
-import Cliente.View.VentanaCliente;
+import Cliente.View.VentanaPrincipal;
 
-public class ControllerCliente implements ActionListener{
+public class ClienteControl implements ActionListener{
     private ClienteConexion cliente;
-    private VentanaCliente ventanaCliente;
+    private VentanaPrincipal ventanaPrincipal;
     private Properties properties;
     private int p1;
-    private String mensaje = "HOLA";
+    private String mensaje;
     private FileChooser fileChooser;
     private Aviso aviso;
-    private HiloCliente hilo;
     
-    public ControllerCliente(){
+    public ClienteControl(){
         this.properties = new Properties();
         this.fileChooser = new FileChooser();
         this.aviso = new Aviso();
@@ -32,11 +31,9 @@ public class ControllerCliente implements ActionListener{
         } catch (Exception e) {
             aviso.verExcepcionConexion(e);
         }
-        hilo = new HiloCliente(this);
-        this.ventanaCliente = new VentanaCliente();
-        hilo.start();
-        ventanaCliente.getButton1().addActionListener(this);
-        ventanaCliente.getButton2().addActionListener(this);
+        this.ventanaPrincipal = new VentanaPrincipal();
+        ventanaPrincipal.getBtnLeer().addActionListener(this);
+        ventanaPrincipal.getBtnSalir().addActionListener(this);
     }
     public void cargarProperties(){
         try{
@@ -47,36 +44,23 @@ public class ControllerCliente implements ActionListener{
         }
     }
     public void actionPerformed(ActionEvent e){
-        if(e.getSource() == ventanaCliente.getButton1()){
-            this.mensaje = ventanaCliente.getTextField1().getText();
-            hilo.run();
-            //System.out.println(mensaje);
+        if(e.getSource() == ventanaPrincipal.getBtnLeer()){
+            mensaje = ventanaPrincipal.getTextArea().getText();
+            try{
+            cliente.enviarCadenas(mensaje);
+            }catch(Exception ex){
+                aviso.verExcepcionFlujos(ex);
+            }
+            ventanaPrincipal.getTextArea().setText("");
         }
-        if(e.getSource() == ventanaCliente.getButton2()){
+        if(e.getSource() == ventanaPrincipal.getBtnSalir()){
             try{
             cliente.cerrarSockets(true);
             }catch(Exception ex){
                 aviso.verExcepcionCerrar(ex);
             }
-            ventanaCliente.getFrame1().dispose();
+            ventanaPrincipal.getJFrame1().dispose();
             aviso.verMensaje("Desconectado");
         }
-    }
-    /*public void charlar( String mensaje){
-        try{
-            cliente.enviarCadenas(mensaje);
-        }catch(Exception ex){
-            aviso.verExcepcionFlujos(ex);
-        }
-        ventanaCliente.getTextField1().setText("");
-    }*/
-    public String getMessage(){
-        return this.mensaje;
-    }
-    public ClienteConexion getClienteConexion(){
-        return this.cliente;
-    }
-    public Aviso getAviso(){
-        return this.aviso;
     }
 }

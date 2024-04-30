@@ -18,7 +18,6 @@ public class ServidorConexion {
 
     public void conectar()throws IOException{
         ServerSocketServidor = new ServerSocket(puerto1);
-        socketClienteIn = ServerSocketServidor.accept();
     }
 
     public void cerrarSockets()throws IOException{ 
@@ -34,7 +33,7 @@ public class ServidorConexion {
     public String getMensaje(){
         return this.mensaje;
     }
-    public Socket getSocket(){
-        return this.socketClienteIn;
+    public ServerSocket getServerSocket(){
+        return this.ServerSocketServidor;
     }
 }
