@@ -3,48 +3,62 @@ package Cliente.Controller;
 import java.util.Properties;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JFileChooser;
+import java.net.UnknownHostException;
 
 import Cliente.Model.ClienteConexion;
+import Cliente.View.Aviso;
+import Cliente.View.FileChooser;
 import Cliente.View.VentanaCliente;
-import java.io.FileInputStream;
+
 public class ControllerCliente implements ActionListener{
     private ClienteConexion cliente;
     private VentanaCliente ventanaCliente;
     private Properties properties;
-    private JFileChooser fileChooser = new JFileChooser();
-    private FileInputStream fileInputStream;
-    private int p1, p2;
+    private int p1;
     private String mensaje;
+    private FileChooser fileChooser;
+    private Aviso aviso;
     
     public ControllerCliente(){
         this.properties = new Properties();
-        getProperties();
-        this.cliente = new ClienteConexion(p1,p2);
+        this.fileChooser = new FileChooser();
+        this.aviso = new Aviso();
+        cargarProperties();
+        try {
+            this.cliente = new ClienteConexion(p1);
+        } catch (UnknownHostException e) {
+            aviso.verExcepcionHost(e);
+        } catch (Exception e) {
+            aviso.verExcepcionConexion(e);
+        }
         this.ventanaCliente = new VentanaCliente();
         ventanaCliente.getButton1().addActionListener(this);
         ventanaCliente.getButton2().addActionListener(this);
     }
-    public void getProperties(){
+    public void cargarProperties(){
         try{
-            this.fileChooser.showOpenDialog(null);
-            this.fileInputStream = new FileInputStream(this.fileChooser.getSelectedFile());
-            this.properties.load(this.fileInputStream);
+            this.properties.load(this.fileChooser.getProperties());
             this.p1 = Integer.parseInt(this.properties.getProperty("port.1"));
-            this.p2 = Integer.parseInt(this.properties.getProperty("port.2"));
         }catch(Exception e){
-            e.printStackTrace();
+            aviso.verExcepcionProperties(e);
         }
     }
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == ventanaCliente.getButton1()){
             mensaje = ventanaCliente.getTextField1().getText();
+            try{
             cliente.enviarCadenas(mensaje);
+            }catch(Exception ex){
+                aviso.verExcepcionFlujos(ex);
+            }
         }
         if(e.getSource() == ventanaCliente.getButton2()){
+            try{
             cliente.cerrarSockets(true);
-            System.out.println("Desconectado");
+            }catch(Exception ex){
+                aviso.verExcepcionCerrar(ex);
+            }
+            aviso.verMensaje("Desconectado");
         }
     }
 }
