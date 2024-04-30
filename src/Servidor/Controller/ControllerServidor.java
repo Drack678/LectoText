@@ -11,7 +11,8 @@ public class ControllerServidor {
     private FileChooser fileChooser;
     private int p1;
     private Aviso aviso;
-    
+    private Thread hilo;
+
     public ControllerServidor(){
         this.aviso = new Aviso();
         this.properties = new Properties();
@@ -21,11 +22,10 @@ public class ControllerServidor {
         aviso.verMensaje("Servidor lanzado");
         try{
             servidor.conectar();
-            while (servidor.getActivo()) {
-                servidor.recibirCadenas();
-                aviso.verMensaje(servidor.getMensaje());
-            }
-            servidor.cerrarSockets();
+            hilo = new Thread(new HiloServidor(servidor.getSocket(), this));
+            hilo.start();
+            aviso.verMensaje(servidor.getMensaje());
+            //servidor.cerrarSockets();
         }catch(IOException e){
             aviso.verExcepcionConexion(e);
         }
@@ -37,5 +37,8 @@ public class ControllerServidor {
         }catch(Exception e){
             aviso.verExcepcion(e);
         }
+    }
+    public ServidorConexion getConexion(){
+        return this.servidor;
     }
 }

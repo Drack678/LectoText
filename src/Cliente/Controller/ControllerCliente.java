@@ -15,9 +15,10 @@ public class ControllerCliente implements ActionListener{
     private VentanaCliente ventanaCliente;
     private Properties properties;
     private int p1;
-    private String mensaje;
+    private String mensaje = "HOLA";
     private FileChooser fileChooser;
     private Aviso aviso;
+    private HiloCliente hilo;
     
     public ControllerCliente(){
         this.properties = new Properties();
@@ -31,7 +32,9 @@ public class ControllerCliente implements ActionListener{
         } catch (Exception e) {
             aviso.verExcepcionConexion(e);
         }
+        hilo = new HiloCliente(this);
         this.ventanaCliente = new VentanaCliente();
+        hilo.start();
         ventanaCliente.getButton1().addActionListener(this);
         ventanaCliente.getButton2().addActionListener(this);
     }
@@ -45,13 +48,9 @@ public class ControllerCliente implements ActionListener{
     }
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == ventanaCliente.getButton1()){
-            mensaje = ventanaCliente.getTextField1().getText();
-            try{
-            cliente.enviarCadenas(mensaje);
-            }catch(Exception ex){
-                aviso.verExcepcionFlujos(ex);
-            }
-            ventanaCliente.getTextField1().setText("");
+            this.mensaje = ventanaCliente.getTextField1().getText();
+            hilo.run();
+            //System.out.println(mensaje);
         }
         if(e.getSource() == ventanaCliente.getButton2()){
             try{
@@ -62,5 +61,22 @@ public class ControllerCliente implements ActionListener{
             ventanaCliente.getFrame1().dispose();
             aviso.verMensaje("Desconectado");
         }
+    }
+    /*public void charlar( String mensaje){
+        try{
+            cliente.enviarCadenas(mensaje);
+        }catch(Exception ex){
+            aviso.verExcepcionFlujos(ex);
+        }
+        ventanaCliente.getTextField1().setText("");
+    }*/
+    public String getMessage(){
+        return this.mensaje;
+    }
+    public ClienteConexion getClienteConexion(){
+        return this.cliente;
+    }
+    public Aviso getAviso(){
+        return this.aviso;
     }
 }

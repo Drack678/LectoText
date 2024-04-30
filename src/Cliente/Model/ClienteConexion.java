@@ -26,7 +26,7 @@ public class ClienteConexion {
             fromServer.close();
         }
     }
-    public void enviarCadenas(String mensaje) throws IOException {
-        dataOutputStreamCliente.writeUTF(mensaje);   
+    public DataOutputStream getOutputStream(){
+        return this.dataOutputStreamCliente;
     }
 }
