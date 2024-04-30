@@ -45,4 +45,7 @@ public class VentanaCliente {
     public JTextField getTextField1(){
         return textField1;
     }
+    public JFrame getFrame1(){
+        return frame1;
+    }
 }

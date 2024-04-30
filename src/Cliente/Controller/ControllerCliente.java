@@ -51,6 +51,7 @@ public class ControllerCliente implements ActionListener{
             }catch(Exception ex){
                 aviso.verExcepcionFlujos(ex);
             }
+            ventanaCliente.getTextField1().setText("");
         }
         if(e.getSource() == ventanaCliente.getButton2()){
             try{
@@ -58,6 +59,7 @@ public class ControllerCliente implements ActionListener{
             }catch(Exception ex){
                 aviso.verExcepcionCerrar(ex);
             }
+            ventanaCliente.getFrame1().dispose();
             aviso.verMensaje("Desconectado");
         }
     }
