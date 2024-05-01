@@ -1,21 +1,19 @@
 package Servidor.Controller;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class  HiloServidor implements Runnable {
     private Socket socketCliente;
-    private ServerSocket aux;
-    private DataInputStream inputStream;
+    private ServerSocket server;
     private ControllerServidor control;
 
     public HiloServidor(ServerSocket serverSocket, ControllerServidor control) {
         try {
-            this.aux = serverSocket;
+            this.server = serverSocket;
             this.control = control;
         } catch (Exception e) {
-           System.out.println("Inesperado");
+            control.getAviso().verMensaje("Error al ejecutar el servidor"+e.getMessage());
         }
     }
 
@@ -23,14 +21,12 @@ public class  HiloServidor implements Runnable {
         try {
             while (control.getConexion().getActivo()) {
                 // Leer mensaje del cliente
-                this.socketCliente = aux.accept();
-                this.inputStream = new DataInputStream(socketCliente.getInputStream());
-                String mensaje = inputStream.readUTF();
-                System.out.println("Mensaje recibido de " + socketCliente.getInetAddress() + ": " + mensaje);
+                this.socketCliente = server.accept();
+                HiloConversacion conversacion = new HiloConversacion(socketCliente, control);
+                conversacion.start();
             }
         } catch (IOException e) {
-            System.out.println("Inesperado");
-            e.printStackTrace();
+            control.getAviso().verMensaje("Error al aceptar la conexion" + e.getMessage());
         }
     }
 }

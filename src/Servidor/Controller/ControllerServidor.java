@@ -24,8 +24,6 @@ public class ControllerServidor {
             servidor.conectar();
             hilo = new Thread(new HiloServidor(servidor.getServerSocket(), this));
             hilo.start();
-            aviso.verMensaje(servidor.getMensaje());
-            //servidor.cerrarSockets();
         }catch(IOException e){
             aviso.verExcepcionConexion(e);
         }
@@ -40,5 +38,8 @@ public class ControllerServidor {
     }
     public ServidorConexion getConexion(){
         return this.servidor;
+    }
+    public Aviso getAviso(){
+        return this.aviso;
     }
 }

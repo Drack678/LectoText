@@ -63,4 +63,5 @@ public class ClienteControl implements ActionListener{
             aviso.verMensaje("Desconectado");
         }
     }
+    
 }
