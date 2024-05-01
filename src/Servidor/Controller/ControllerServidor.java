@@ -22,7 +22,7 @@ public class ControllerServidor {
         aviso.verMensaje("Servidor lanzado");
         try{
             servidor.conectar();
-            hilo = new Thread(new HiloServidor(servidor.getServerSocket(), this));
+            hilo = new Thread(new HiloServer(servidor.getServerSocket(), this));
             hilo.start();
         }catch(IOException e){
             aviso.verExcepcionConexion(e);

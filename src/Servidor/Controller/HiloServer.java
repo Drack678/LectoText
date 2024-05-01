@@ -3,12 +3,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class  HiloServidor implements Runnable {
+public class  HiloServer implements Runnable {
     private Socket socketCliente;
     private ServerSocket server;
     private ControllerServidor control;
 
-    public HiloServidor(ServerSocket serverSocket, ControllerServidor control) {
+    public HiloServer(ServerSocket serverSocket, ControllerServidor control) {
         try {
             this.server = serverSocket;
             this.control = control;
